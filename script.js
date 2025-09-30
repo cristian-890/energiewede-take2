@@ -36,27 +36,25 @@ function renderDeck(){
 function addCardInteraction(el){
   let startX=0, startY=0, currentX=0, currentY=0, dragging=false;
   el.addEventListener('pointerdown', e=>{
-    startX=e.clientX; startY=e.clientY; dragging=true; el.style.transition='none';
-
+    startX = e.clientX; startY = e.clientY; dragging = true; el.style.transition = 'transform 0.05s ease';
     const moveHandler = e=>{
       if(!dragging) return;
       currentX = e.clientX - startX;
       currentY = e.clientY - startY;
+      // Drag + Wobble 3D
       el.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${currentX/12}deg) rotateY(${currentX/50}deg) rotateX(${currentY/50}deg)`;
     };
-
     const upHandler = e=>{
       dragging=false;
       el.releasePointerCapture(e.pointerId);
-      el.style.transition='transform 220ms ease, opacity 220ms ease';
+      el.style.transition='transform 0.1s ease, opacity 0.2s ease';
       const threshold=120;
-      if(currentX > threshold) swipeCard('right', el);
-      else if(currentX < -threshold) swipeCard('left', el);
+      if(currentX>threshold) swipeCard('right', el);
+      else if(currentX<-threshold) swipeCard('left', el);
       else el.style.transform='translate(0,0) rotate(0)';
       window.removeEventListener('pointermove', moveHandler);
       window.removeEventListener('pointerup', upHandler);
     };
-
     window.addEventListener('pointermove', moveHandler);
     window.addEventListener('pointerup', upHandler);
     el.setPointerCapture(e.pointerId);
@@ -66,30 +64,22 @@ function addCardInteraction(el){
 function swipeCard(dir, el){
   const top = deck[deck.length-1];
   const correct = (dir==='right' && top.ok) || (dir==='left' && !top.ok);
-
-  if(correct){rightCount++; rightCountEl.textContent=rightCount;}
-  else{wrongCount++; wrongCountEl.textContent=wrongCount;}
+  if(correct){rightCount++; rightCountEl.textContent=rightCount;} else {wrongCount++; wrongCountEl.textContent=wrongCount;}
   showFeedback(correct);
-
-  // Karte aus dem Bildschirm swipen
-  const offset = dir==='right' ? 1000 : -1000;
-  el.style.transform = `translateX(${offset}px) rotate(${offset/12}deg)`;
-  el.style.opacity = '0';
-
+  const offset = dir==='right'?1000:-1000;
+  el.style.transform=`translateX(${offset}px) rotate(${offset/12}deg)`;
+  el.style.opacity='0';
   deck.pop();
   setTimeout(()=>{
-    if(deck.length===0){
-      showGameEnd();
-    } else {
-      renderDeck();
-    }
+    if(deck.length===0){showGameEnd();}
+    else{renderDeck();}
     updateLeaderboard();
-  }, 220);
+  }, 120);
 }
 
 function showFeedback(correct){
-  feedbackEl.textContent = correct ? '😊' : '😢';
-  feedbackEl.className = 'feedback ' + (correct ? 'smile show' : 'cry show');
+  feedbackEl.textContent = correct?'😊':'😢';
+  feedbackEl.className = 'feedback '+(correct?'smile show':'cry show');
   setTimeout(()=>{feedbackEl.className='feedback'; feedbackEl.textContent='';},1000);
 }
 
@@ -98,13 +88,8 @@ function updateLeaderboard(){
 }
 
 function showGameEnd(){
-  // Alle Karten entfernen
-  deckEl.innerHTML = '';
-
-  // Scoreboard zentrieren
-  leaderboardEl.style.position='fixed';
-  leaderboardEl.style.top='50%';
-  leaderboardEl.style.left='50%';
-  leaderboardEl.style.transform='translate(-50%,-50%) scale(1.2)';
-  leaderboardEl.style.fontSize='22px';
+  deckEl.innerHTML='';
+  leaderboardEl.style.position='relative';
+  leaderboardEl.style.transform='scale(1)';
+  leaderboardEl.innerHTML = `<div class="player">🎉 Spiel beendet!<br>Richtig: ${rightCount} | Falsch: ${wrongCount}</div>`;
 }
