@@ -3,7 +3,6 @@
   --card: #0f1720;
 }
 
-/* Grundlayout */
 html, body {
   height: 100%;
   margin: 0;
@@ -30,7 +29,6 @@ h1 {
   margin: 0 0 8px 0;
 }
 
-/* Karten-Deck */
 .deck {
   width: 360px;
   height: 560px;
@@ -38,7 +36,6 @@ h1 {
   z-index: 1;
 }
 
-/* Karten */
 .card {
   position: absolute;
   inset: 0;
@@ -53,21 +50,10 @@ h1 {
   box-shadow: 0 10px 30px rgba(0,0,0,.6);
   background: linear-gradient(180deg,#111827,#0b1220);
   transform-origin: center;
-  transition: transform .2s ease, opacity .2s ease;
+  transition: transform 0.1s ease, opacity 0.2s ease;
   perspective: 1000px;
-  animation: wobble 2s infinite ease-in-out;
 }
 
-/* Wobble Animation */
-@keyframes wobble {
-  0% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-2px) rotate(-1deg); }
-  50% { transform: translateY(0px) rotate(0deg); }
-  75% { transform: translateY(2px) rotate(1deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
-}
-
-/* Neon Symbole */
 .symbol {
   position: fixed;
   top: 50%;
@@ -80,17 +66,9 @@ h1 {
   text-shadow: 0 0 12px;
 }
 
-.symbol.left {
-  left: 40px;
-  color: #ff1744;
-}
+.symbol.left { left: 40px; color: #ff1744; }
+.symbol.right { right: 40px; color: #00e676; }
 
-.symbol.right {
-  right: 40px;
-  color: #00e676;
-}
-
-/* Smiley Feedback */
 .feedback {
   position: absolute;
   top: 50%;
@@ -112,40 +90,11 @@ h1 {
   100% { transform: translate(-50%,-50%) scale(2); opacity:0; }
 }
 
-.smile {
-  color: #00e676;
-  text-shadow: 0 0 12px #00e676, 0 0 24px #00e676;
-}
+.smile { color: #00e676; text-shadow: 0 0 12px #00e676, 0 0 24px #00e676; }
+.cry { color: #ff1744; text-shadow: 0 0 12px #ff1744, 0 0 24px #ff1744; }
 
-.cry {
-  color: #ff1744;
-  text-shadow: 0 0 12px #ff1744, 0 0 24px #ff1744;
-}
+.counter { display: flex; gap: 24px; font-size: 18px; margin-top: 12px; color: #9aa4ad; }
+.counter span { font-weight: 600; font-size: 20px; }
 
-/* Counter */
-.counter {
-  display: flex;
-  gap: 24px;
-  font-size: 18px;
-  margin-top: 12px;
-  color: #9aa4ad;
-}
-
-.counter span {
-  font-weight: 600;
-  font-size: 20px;
-}
-
-/* Leaderboard */
-.leaderboard {
-  margin-top: 24px;
-  width: 80%;
-  max-width: 500px;
-  text-align: center;
-  transition: all 0.8s ease;
-}
-
-.player {
-  padding: 6px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+.leaderboard { margin-top: 24px; width: 80%; max-width: 500px; text-align: center; transition: all 0.8s ease; }
+.player { padding: 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
